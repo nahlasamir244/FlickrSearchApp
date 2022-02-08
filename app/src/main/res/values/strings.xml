@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">FlickrSearchApp</string>
+    <string name="search_hint">Type photo title or tag name ..</string>
+    <string name="network_error_message">Network Error !</string>
+    <string name="no_internet_message">Failed to connect you are offline !</string>
+    <string name="invalid_input_message">please enter a valid query !</string>
+    <string name="no_search_result">no search result :( </string>
+    <string name="photo_title_example">Sky Lanterns at Bellavita Shopping Mall in Taipei </string>
 </resources>
