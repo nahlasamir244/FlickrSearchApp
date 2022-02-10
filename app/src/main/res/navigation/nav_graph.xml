@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/photoListFragment"
-        android:name="com.nahlasamir244.flickrsearchapp.presentation.photo_list.PhotoListFragment"
+        android:name="com.nahlasamir244.flickrsearchapp.presentation.home.HomeFragment"
         android:label="PhotoListFragment" >
         <action
             android:id="@+id/action_photoListFragment_to_photoPreviewFragment"
