@@ -1,10 +1,15 @@
 package com.nahlasamir244.flickrsearchapp.di
 
+import android.content.Context
+import androidx.room.Room
 import com.nahlasamir244.flickrsearchapp.BuildConfig
+import com.nahlasamir244.flickrsearchapp.data.api.PhotoApiService
+import com.nahlasamir244.flickrsearchapp.data.db.FlickrSearchAppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
@@ -55,5 +60,35 @@ class AppModule {
             .baseUrl(baseUrl)
             .client(okHttpClient)
             .build()
+
+    @Provides
+    @Singleton
+    fun providePhotoApiService(retrofit: Retrofit): PhotoApiService = retrofit.create(
+        PhotoApiService::class.java)
+
+    @Provides
+    @DatabaseName
+    @Singleton
+    fun provideDatabaseName() = "Flickr_Search.db"
+
+    @Provides
+    @Singleton
+    fun provideFlickrSearchAppDatabase(@ApplicationContext applicationContext: Context,
+                                       @DatabaseName databaseName: String,)
+    : FlickrSearchAppDatabase {
+        return Room.databaseBuilder(
+            applicationContext,
+            FlickrSearchAppDatabase::class.java,
+            databaseName
+        ).build()
+    }
+
+    @Provides
+    fun providePhotoDao(flickrSearchAppDatabase: FlickrSearchAppDatabase)
+    = flickrSearchAppDatabase.photoDao()
+
+    @Provides
+    fun providePhotoRemoteKeysDao(flickrSearchAppDatabase: FlickrSearchAppDatabase)
+    = flickrSearchAppDatabase.photoRemoteKeysDao()
 
 }
