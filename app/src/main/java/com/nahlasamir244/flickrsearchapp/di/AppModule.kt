@@ -2,7 +2,7 @@ package com.nahlasamir244.flickrsearchapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.nahlasamir244.flickrsearchapp.BuildConfig
+import androidx.viewbinding.BuildConfig
 import com.nahlasamir244.flickrsearchapp.data.api.PhotoApiService
 import com.nahlasamir244.flickrsearchapp.data.db.FlickrSearchAppDatabase
 import dagger.Module
