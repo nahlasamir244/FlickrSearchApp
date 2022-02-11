@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "photo_remote_keys_table")
 data class PhotoRemoteKeys(
     @PrimaryKey
-    val photoId:String,
-    val prevKey: Int?,
+    val photoId: String,
+    val previousKey: Int?,
     val nextKey: Int?
 )

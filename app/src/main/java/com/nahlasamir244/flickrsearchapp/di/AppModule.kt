@@ -4,7 +4,11 @@ import android.content.Context
 import androidx.room.Room
 import androidx.viewbinding.BuildConfig
 import com.nahlasamir244.flickrsearchapp.data.api.PhotoApiService
-import com.nahlasamir244.flickrsearchapp.data.db.FlickrSearchAppDatabase
+import com.nahlasamir244.flickrsearchapp.data.datasource.photo.local.PhotoLocalDataSource
+import com.nahlasamir244.flickrsearchapp.data.datasource.photo.local.PhotoLocalDataSourceImpl
+import com.nahlasamir244.flickrsearchapp.data.datasource.photo.remote.PhotoRemoteDataSource
+import com.nahlasamir244.flickrsearchapp.data.datasource.photo.remote.PhotoRemoteDataSourceImpl
+import com.nahlasamir244.flickrsearchapp.data.db.database.FlickrSearchAppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,8 +57,10 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient, @BaseUrl baseUrl: String,
-                        gsonConverterFactory: GsonConverterFactory): Retrofit =
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient, @BaseUrl baseUrl: String,
+        gsonConverterFactory: GsonConverterFactory
+    ): Retrofit =
         Retrofit.Builder()
             .addConverterFactory(gsonConverterFactory)
             .baseUrl(baseUrl)
@@ -64,7 +70,8 @@ class AppModule {
     @Provides
     @Singleton
     fun providePhotoApiService(retrofit: Retrofit): PhotoApiService = retrofit.create(
-        PhotoApiService::class.java)
+        PhotoApiService::class.java
+    )
 
     @Provides
     @DatabaseName
@@ -73,9 +80,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideFlickrSearchAppDatabase(@ApplicationContext applicationContext: Context,
-                                       @DatabaseName databaseName: String,)
-    : FlickrSearchAppDatabase {
+    fun provideFlickrSearchAppDatabase(
+        @ApplicationContext applicationContext: Context,
+        @DatabaseName databaseName: String,
+    )
+            : FlickrSearchAppDatabase {
         return Room.databaseBuilder(
             applicationContext,
             FlickrSearchAppDatabase::class.java,
@@ -84,11 +93,22 @@ class AppModule {
     }
 
     @Provides
-    fun providePhotoDao(flickrSearchAppDatabase: FlickrSearchAppDatabase)
-    = flickrSearchAppDatabase.photoDao()
+    fun providePhotoDao(flickrSearchAppDatabase: FlickrSearchAppDatabase) =
+        flickrSearchAppDatabase.photoDao()
 
     @Provides
-    fun providePhotoRemoteKeysDao(flickrSearchAppDatabase: FlickrSearchAppDatabase)
-    = flickrSearchAppDatabase.photoRemoteKeysDao()
+    fun providePhotoRemoteKeysDao(flickrSearchAppDatabase: FlickrSearchAppDatabase) =
+        flickrSearchAppDatabase.photoRemoteKeysDao()
+
+
+    @Provides
+    @Singleton
+    fun providePhotoLocalDataSource(photoLocalDataSourceImpl: PhotoLocalDataSourceImpl)
+            : PhotoLocalDataSource = photoLocalDataSourceImpl
+
+    @Provides
+    @Singleton
+    fun providePhotoRemoteDataSource(photoRemoteDataSourceImpl: PhotoRemoteDataSourceImpl)
+            : PhotoRemoteDataSource = photoRemoteDataSourceImpl
 
 }

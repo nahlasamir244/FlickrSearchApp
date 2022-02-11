@@ -12,9 +12,9 @@ interface PhotoApiService {
         @Query("text") searchQuery: String,
         @Query("page") pageNumber: Int,
         @Query("per_page") numberOfPhotosPerPage: Int,
-        @Query("method") method: String="flickr.photos.search",
-        @Query("nojsoncallback") noJson: Int=50,
-        @Query("format") format: String=Constants.RESPONSE_FORMAT,
-        @Query("api_key") apiKey: String=Constants.FLICKR_API_KEY,
-        ): Response<PhotoSearchResponse>
+        @Query("method") method: String = "flickr.photos.search",
+        @Query("nojsoncallback") noJson: Int = 50,
+        @Query("format") format: String = Constants.RESPONSE_FORMAT,
+        @Query("api_key") apiKey: String = Constants.FLICKR_API_KEY,
+    ): Response<PhotoSearchResponse>
 }

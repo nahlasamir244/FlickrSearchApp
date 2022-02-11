@@ -1,4 +1,4 @@
-package com.nahlasamir244.flickrsearchapp.data.db
+package com.nahlasamir244.flickrsearchapp.data.db.database
 
 import androidx.room.withTransaction
 import javax.inject.Inject

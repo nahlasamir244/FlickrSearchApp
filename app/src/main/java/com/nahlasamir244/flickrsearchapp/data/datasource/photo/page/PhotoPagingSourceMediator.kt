@@ -1,14 +1,13 @@
-package com.nahlasamir244.flickrsearchapp.data.datasource
+package com.nahlasamir244.flickrsearchapp.data.datasource.photo.page
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.nahlasamir244.flickrsearchapp.application.FlickrSearchApp
-import com.nahlasamir244.flickrsearchapp.data.api.PhotoApiService
-import com.nahlasamir244.flickrsearchapp.data.db.FlickrDatabaseTransactionProvider
-import com.nahlasamir244.flickrsearchapp.data.db.PhotoDao
-import com.nahlasamir244.flickrsearchapp.data.db.PhotoRemoteKeysDao
+import com.nahlasamir244.flickrsearchapp.data.datasource.photo.local.PhotoLocalDataSource
+import com.nahlasamir244.flickrsearchapp.data.datasource.photo.remote.PhotoRemoteDataSource
+import com.nahlasamir244.flickrsearchapp.data.db.database.FlickrDatabaseTransactionProvider
 import com.nahlasamir244.flickrsearchapp.data.model.Photo
 import com.nahlasamir244.flickrsearchapp.data.model.PhotoRemoteKeys
 import dagger.hilt.EntryPoint
@@ -19,12 +18,11 @@ import retrofit2.HttpException
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
-class PhotoRemoteMediator(
-    private val query: String
+class PhotoPagingSourceMediator(
+    private val searchQuery: String
 ) : RemoteMediator<Int, Photo>() {
-    var photoApiService: PhotoApiService = getService()
-    var photoDao: PhotoDao = getDao()
-    var remoteKeysDao: PhotoRemoteKeysDao = getRemoteKeysDao()
+    var photoRemoteDataSource: PhotoRemoteDataSource = getRemoteDataSource()
+    var photoLocalDataSource: PhotoLocalDataSource = getLocalDataSource()
     var flickrDatabaseTransactionProvider: FlickrDatabaseTransactionProvider =
         getTransactionProvider()
 
@@ -38,19 +36,19 @@ class PhotoRemoteMediator(
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Photo>):
             MediatorResult {
-        val page = when (loadType) {
+        val pageNumber = when (loadType) {
             LoadType.REFRESH -> {
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
                 remoteKeys?.nextKey?.minus(1) ?: PAGE_STARTING_INDEX
             }
             LoadType.PREPEND -> {
                 val remoteKeys = getRemoteKeyForFirstItem(state)
-                val prevKey = remoteKeys?.prevKey
+                val previousKey = remoteKeys?.previousKey
                     ?: return MediatorResult.Success(
                         endOfPaginationReached =
                         remoteKeys != null
                     )
-                prevKey
+                previousKey
             }
             LoadType.APPEND -> {
                 val remoteKeys = getRemoteKeyForLastItem(state)
@@ -62,27 +60,31 @@ class PhotoRemoteMediator(
                 nextKey
             }
         }
-        val apiQuery = query
+        val searchApiQuery = searchQuery
         try {
-            val apiResponse =
-                photoApiService.getPhotoSearchList(apiQuery, page, state.config.pageSize)
-            val photos = apiResponse.body()?.photoSearchResponseMeta?.photoList
+            val searchApiResponse =
+                photoRemoteDataSource.getPhotoSearchList(
+                    searchApiQuery,
+                    pageNumber,
+                    state.config.pageSize
+                )
+            val photos = searchApiResponse.body()?.photoSearchResponseMeta?.photoList
             val endOfPaginationReached = photos?.isEmpty() ?: true
             flickrDatabaseTransactionProvider.runAsTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    remoteKeysDao.deleteAll()
-                    photoDao.deleteAll()
+                    photoLocalDataSource.clearRemoteKeys()
+                    photoLocalDataSource.clearPhotos()
                 }
-                val prevKey = if (page == PAGE_STARTING_INDEX) null else page - 1
-                val nextKey = if (endOfPaginationReached) null else page + 1
+                val prevKey = if (pageNumber == PAGE_STARTING_INDEX) null else pageNumber - 1
+                val nextKey = if (endOfPaginationReached) null else pageNumber + 1
                 val keys = photos?.map {
-                    PhotoRemoteKeys(photoId = it.id, prevKey = prevKey, nextKey = nextKey)
+                    PhotoRemoteKeys(photoId = it.id, previousKey = prevKey, nextKey = nextKey)
                 }
                 if (keys != null) {
-                    remoteKeysDao.insertAll(keys)
+                    photoLocalDataSource.saveRemoteKeys(keys)
                 }
                 if (photos != null) {
-                    photoDao.insertAll(photos)
+                    photoLocalDataSource.savePhotos(photos)
                 }
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
@@ -97,14 +99,14 @@ class PhotoRemoteMediator(
     private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Photo>): PhotoRemoteKeys? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { photo ->
-                remoteKeysDao.getRemoteKeysByPhotoId(photo.id)
+                photoLocalDataSource.getRemoteKeysForPhoto(photo.id)
             }
     }
 
     private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Photo>): PhotoRemoteKeys? {
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
             ?.let { photo ->
-                remoteKeysDao.getRemoteKeysByPhotoId(photo.id)
+                photoLocalDataSource.getRemoteKeysForPhoto(photo.id)
             }
     }
 
@@ -113,24 +115,18 @@ class PhotoRemoteMediator(
     ): PhotoRemoteKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { photoId ->
-                remoteKeysDao.getRemoteKeysByPhotoId(photoId)
+                photoLocalDataSource.getRemoteKeysForPhoto(photoId)
             }
         }
     }
 
-
-    private fun getService() =
+    private fun getRemoteDataSource(): PhotoRemoteDataSource =
         EntryPoints.get(FlickrSearchApp.getAppContext(), RemoteMediatorEntryPoint::class.java)
-            .getPhotoApiService()
+            .getPhotoRemoteDataSource()
 
-    private fun getDao() =
+    private fun getLocalDataSource(): PhotoLocalDataSource =
         EntryPoints.get(FlickrSearchApp.getAppContext(), RemoteMediatorEntryPoint::class.java)
-            .getPhotoDao()
-
-    @JvmName("getRemoteKeysDao1")
-    private fun getRemoteKeysDao() =
-        EntryPoints.get(FlickrSearchApp.getAppContext(), RemoteMediatorEntryPoint::class.java)
-            .getPhotoRemoteKeysDao()
+            .getPhotoLocalDataSource()
 
     private fun getTransactionProvider(): FlickrDatabaseTransactionProvider =
         EntryPoints.get(FlickrSearchApp.getAppContext(), RemoteMediatorEntryPoint::class.java)
@@ -139,9 +135,8 @@ class PhotoRemoteMediator(
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface RemoteMediatorEntryPoint {
-        fun getPhotoApiService(): PhotoApiService
-        fun getPhotoDao(): PhotoDao
-        fun getPhotoRemoteKeysDao(): PhotoRemoteKeysDao
+        fun getPhotoRemoteDataSource(): PhotoRemoteDataSource
+        fun getPhotoLocalDataSource(): PhotoLocalDataSource
         fun getFlickrDatabaseTransactionProvider(): FlickrDatabaseTransactionProvider
     }
 }

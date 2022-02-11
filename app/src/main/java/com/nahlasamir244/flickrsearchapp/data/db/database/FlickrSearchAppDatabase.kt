@@ -1,7 +1,9 @@
-package com.nahlasamir244.flickrsearchapp.data.db
+package com.nahlasamir244.flickrsearchapp.data.db.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.nahlasamir244.flickrsearchapp.data.db.dao.PhotoDao
+import com.nahlasamir244.flickrsearchapp.data.db.dao.PhotoRemoteKeysDao
 import com.nahlasamir244.flickrsearchapp.data.model.Photo
 import com.nahlasamir244.flickrsearchapp.data.model.PhotoRemoteKeys
 

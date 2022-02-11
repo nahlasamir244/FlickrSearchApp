@@ -16,6 +16,6 @@ data class Photo(
     @SerializedName("ispublic") var isPublic: Int?,
     @SerializedName("isfriend") var isFriend: Int?,
     @SerializedName("isfamily") var isFamily: Int?,
-    var index:Int
+    var index: Int
 
 )
