@@ -11,7 +11,7 @@ class AdBannerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val title: TextView = view.findViewById(R.id.textView_ad)
 
     fun bind(text: String) {
-        title.text =text
+        title.text = text
     }
 
     companion object {

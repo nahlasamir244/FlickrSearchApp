@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.nahlasamir244.flickrsearchapp.R
 import com.nahlasamir244.flickrsearchapp.utils.exhaustive
 
-class HomeItemAdapter : PagingDataAdapter<HomeUiModel,ViewHolder>(HOME_UI_MODEL_COMPARATOR) {
+class HomeItemAdapter : PagingDataAdapter<HomeUiModel, ViewHolder>(HOME_UI_MODEL_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return if (viewType == R.layout.item_photo) {
@@ -16,6 +16,7 @@ class HomeItemAdapter : PagingDataAdapter<HomeUiModel,ViewHolder>(HOME_UI_MODEL_
             AdBannerViewHolder.create(parent)
         }
     }
+
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is HomeUiModel.PhotoItem -> R.layout.item_photo

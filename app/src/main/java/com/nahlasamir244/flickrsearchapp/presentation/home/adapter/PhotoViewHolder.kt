@@ -1,7 +1,5 @@
 package com.nahlasamir244.flickrsearchapp.presentation.home.adapter
 
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +10,7 @@ import com.nahlasamir244.flickrsearchapp.data.model.Photo
 
 class PhotoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val title: TextView = view.findViewById(R.id.textView_photoTitle)
-    private var photo:Photo? = null
+    private var photo: Photo? = null
 
     init {
         view.setOnClickListener {
