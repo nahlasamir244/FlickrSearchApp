@@ -9,6 +9,8 @@ import com.nahlasamir244.flickrsearchapp.data.datasource.photo.local.PhotoLocalD
 import com.nahlasamir244.flickrsearchapp.data.datasource.photo.remote.PhotoRemoteDataSource
 import com.nahlasamir244.flickrsearchapp.data.datasource.photo.remote.PhotoRemoteDataSourceImpl
 import com.nahlasamir244.flickrsearchapp.data.db.database.FlickrSearchAppDatabase
+import com.nahlasamir244.flickrsearchapp.data.repo.photo.PhotoRepository
+import com.nahlasamir244.flickrsearchapp.data.repo.photo.PhotoRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -110,5 +112,10 @@ class AppModule {
     @Singleton
     fun providePhotoRemoteDataSource(photoRemoteDataSourceImpl: PhotoRemoteDataSourceImpl)
             : PhotoRemoteDataSource = photoRemoteDataSourceImpl
+
+    @Provides
+    @Singleton
+    fun providePhotoRepository(photoRepositoryImpl: PhotoRepositoryImpl)
+    :PhotoRepository = photoRepositoryImpl
 
 }
