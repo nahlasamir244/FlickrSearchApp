@@ -20,3 +20,8 @@ MVVM single activity architecture following the Data-Domain-Presentation clean a
 10.  Dagger-Hilt for dependency injection
 11.  Retrofit/okhttp for networking
 12.  Paging3 for supporting pagination
+
+## Screenshots:
+
+<kbd><img width="216" height="432" src="screenshots/home.png" alt="home screen" /></kbd>
+<kbd><img width="216" height="432" src="screenshots/photo_preview.png" alt="single photo preview"/></kbd>
