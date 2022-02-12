@@ -24,4 +24,4 @@ MVVM single activity architecture following the Data-Domain-Presentation clean a
 ## Screenshots:
 
 <kbd><img width="216" height="432" src="screenshots/home.png" alt="home screen" /></kbd>
-<kbd><img width="216" height="432" src="screenshots/photo_preview.png" alt="single photo preview"/></kbd>
+<kbd><img width="216" height="432" src="screenshots/single_preview.png" alt="single photo preview"/></kbd>
