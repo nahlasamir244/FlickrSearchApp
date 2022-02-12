@@ -12,6 +12,7 @@ class ValidateInputUseCase {
     = input.isNotBlank() && input.isNotEmpty()
 
 }
+
 //each inputType has a different validation criteria
 enum class InputType{
     PHOTO_SEARCH_QUERY

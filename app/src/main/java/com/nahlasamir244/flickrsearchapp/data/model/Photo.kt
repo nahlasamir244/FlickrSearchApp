@@ -1,10 +1,13 @@
 package com.nahlasamir244.flickrsearchapp.data.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "photo_table")
+@Parcelize
 data class Photo(
 
     @PrimaryKey @SerializedName("id") var id: String,
@@ -18,4 +21,4 @@ data class Photo(
     @SerializedName("isfamily") var isFamily: Int?,
     var index: Int
 
-)
+): Parcelable

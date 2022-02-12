@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nahlasamir244.flickrsearchapp.R
 import com.nahlasamir244.flickrsearchapp.databinding.ItemLoadStateBinding
 
-class PhotosLoadStateViewHolder(
+class HomeLoadStateViewHolder(
     private val binding: ItemLoadStateBinding,
     retry: () -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
@@ -27,11 +27,11 @@ class PhotosLoadStateViewHolder(
     }
 
     companion object {
-        fun create(parent: ViewGroup, retry: () -> Unit): PhotosLoadStateViewHolder {
+        fun create(parent: ViewGroup, retry: () -> Unit): HomeLoadStateViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_load_state, parent, false)
             val binding = ItemLoadStateBinding.bind(view)
-            return PhotosLoadStateViewHolder(binding, retry)
+            return HomeLoadStateViewHolder(binding, retry)
         }
     }
 }

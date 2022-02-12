@@ -9,7 +9,7 @@ import com.nahlasamir244.flickrsearchapp.data.model.Photo
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class PhotoRepositoryImpl: PhotoRepository {
+class PhotoRepositoryImpl @Inject constructor(): PhotoRepository {
     override fun getSearchResultPhotoListStream(searchQuery: String): Flow<PagingData<Photo>> {
         Log.d("PhotoRepository", "Search query: $searchQuery")
         return Pager(

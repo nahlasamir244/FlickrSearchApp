@@ -19,7 +19,9 @@
         android:label="photo_preview_fragment"
         tools:layout="@layout/photo_preview_fragment" >
         <argument
-            android:name="photoId"
-            app:argType="integer" />
+            android:name="photo"
+            app:argType="com.nahlasamir244.flickrsearchapp.data.model.Photo"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>
