@@ -33,7 +33,7 @@ class HomeItemAdapter(private val photoAdapterHandler: PhotoAdapterHandler) :
                 is HomeUiModel.PhotoItem ->
                     (holder as PhotoViewHolder).bind(homeUiModel.photo)
                 is HomeUiModel.AdBannerItem ->
-                    (holder as AdBannerViewHolder).bind(homeUiModel.text)
+                    (holder as AdBannerViewHolder).bind()
                 else -> {
                 }
             }.exhaustive
@@ -48,7 +48,7 @@ class HomeItemAdapter(private val photoAdapterHandler: PhotoAdapterHandler) :
                             oldItem.photo.id == newItem.photo.id) ||
                             (oldItem is HomeUiModel.AdBannerItem &&
                                     newItem is HomeUiModel.AdBannerItem &&
-                                    oldItem.text == newItem.text)
+                                    oldItem.ad.id == newItem.ad.id)
                 }
 
                 override fun areContentsTheSame(oldItem: HomeUiModel, newItem: HomeUiModel)

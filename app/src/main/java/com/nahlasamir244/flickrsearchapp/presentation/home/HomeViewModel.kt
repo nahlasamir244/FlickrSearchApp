@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.insertSeparators
 import androidx.paging.map
+import com.nahlasamir244.flickrsearchapp.data.model.Ad
 import com.nahlasamir244.flickrsearchapp.data.model.Photo
 import com.nahlasamir244.flickrsearchapp.data.repo.photo.PhotoRepository
 import com.nahlasamir244.flickrsearchapp.domain.InputType
@@ -91,7 +92,7 @@ class HomeViewModel @ViewModelInject constructor(
                         return@insertSeparators null
                     }
                     if ((before.photo.index + 1).rem(5) == 0) {
-                        HomeUiModel.AdBannerItem("ad")
+                        HomeUiModel.AdBannerItem(Ad(AD_UNIT_ID))
                     } else {
                         null
                     }
@@ -116,6 +117,7 @@ class HomeViewModel @ViewModelInject constructor(
         private const val LAST_SEARCH_QUERY: String = "last_search_query"
         private const val DEFAULT_SEARCH_QUERY = "color"
         private const val REQUEST_TIMEOUT: Long = 5000
+        private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111"
     }
 
 }

@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/FlickrSearchApp/app/src/main/res/layout/home_fragment.xml" value="0.12685185185185185" />
+        <entry key="..\:/FlickrSearchApp/app/src/main/res/layout/item_ad_banner.xml" value="0.1" />
         <entry key="..\:/FlickrSearchApp/app/src/main/res/layout/item_photo.xml" value="0.12685185185185185" />
         <entry key="..\:/FlickrSearchApp/app/src/main/res/layout/photo_preview_fragment.xml" value="0.1" />
       </map>

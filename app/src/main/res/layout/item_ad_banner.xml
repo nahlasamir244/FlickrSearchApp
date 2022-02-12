@@ -8,14 +8,15 @@
     android:layout_marginTop="16dp"
     android:background="@color/focuslessGrey">
 
-    <TextView
-        android:id="@+id/textView_ad"
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="@dimen/row_item_margin_horizontal"
-        style="@style/TextBlackStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/photo_title_example" />
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+    </com.google.android.gms.ads.AdView>
 </androidx.constraintlayout.widget.ConstraintLayout>
