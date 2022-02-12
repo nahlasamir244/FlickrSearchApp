@@ -5,7 +5,8 @@
     <string name="no_internet_message">Failed to connect you are offline !</string>
     <string name="invalid_input_message">please enter a valid query !</string>
     <string name="no_search_result">no search result :( </string>
-    <string name="photo_title_example">Sky Lanterns at Bellavita Shopping Mall in Taipei </string>
+    <string name="photo_title_example" translatable="false">
+        Sky Lanterns at Bellavita Shopping Mall in Taipei </string>
     <string name="retry">retry</string>
     <string name="timeout">Timeout</string>
     <string name="item_not_available">item is not available</string>

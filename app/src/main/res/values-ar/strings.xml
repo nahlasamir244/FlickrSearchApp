@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">تطبيق بحث الصور</string>
+    <string name="search_hint">اكتب اسم الصورة او الوسم ..</string>
+    <string name="network_error_message">خطأ فى الشبكة !</string>
+    <string name="no_internet_message">برجاء الاتصال بالانترنت</string>
+    <string name="invalid_input_message">برجاء ادخال كلمات للبحث</string>
+    <string name="no_search_result">لا يوجد نتيجة للبحث حاول ادخال كلمات اخرى</string>
+    <string name="retry">حاول مرة اخرى</string>
+    <string name="timeout">نفذت مهلة المحاولة</string>
+    <string name="item_not_available">هذا المحتوى غير موجود</string>
+</resources>
