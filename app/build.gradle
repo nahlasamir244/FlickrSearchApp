@@ -107,6 +107,9 @@ dependencies {
 
     //ads
     implementation 'com.google.android.gms:play-services-ads:20.5.0'
+
+    //full screen images
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 }
 kapt {
     correctErrorTypes true
